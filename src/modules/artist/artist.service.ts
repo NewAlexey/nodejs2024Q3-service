@@ -5,14 +5,18 @@ import { ArtistRepository } from 'src/db/artist.repository';
 import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
 import { CreateArtistDto } from 'src/modules/artist/dto/create-artist.dto';
 import { UpdateArtistDto } from 'src/modules/artist/dto/update-artist.dto';
+import { FavoritesRepository } from 'src/db/favorites.repository';
 
 @Injectable()
 export class ArtistService {
-  constructor(private readonly artistRepository: ArtistRepository) {}
+  constructor(
+    private readonly artistRepository: ArtistRepository,
+    private readonly favoritesRepository: FavoritesRepository,
+  ) {}
 
-  public async getArtist(artistId: string): Promise<ArtistEntity> {
+  public async getArtist(id: string): Promise<ArtistEntity> {
     const artist: ArtistEntity | undefined = await this.artistRepository.get(
-      artistId,
+      id,
     );
 
     assertIsDefined(
@@ -47,11 +51,11 @@ export class ArtistService {
   }
 
   public async updateArtist(
-    artistId: string,
+    id: string,
     updateArtistDto: UpdateArtistDto,
   ): Promise<ArtistEntity> {
     const artist: ArtistEntity | undefined = await this.artistRepository.get(
-      artistId,
+      id,
     );
 
     assertIsDefined(
@@ -63,12 +67,12 @@ export class ArtistService {
 
     await this.artistRepository.update(artist, updateArtistDto);
 
-    return this.getArtist(artistId);
+    return this.getArtist(id);
   }
 
-  public async deleteArtist(artistId: string): Promise<void> {
+  public async deleteArtist(id: string): Promise<void> {
     const artist: ArtistEntity | undefined = await this.artistRepository.get(
-      artistId,
+      id,
     );
 
     assertIsDefined(
@@ -78,6 +82,7 @@ export class ArtistService {
       HttpStatus.NOT_FOUND,
     );
 
-    await this.artistRepository.delete(artistId);
+    await this.artistRepository.delete(id);
+    await this.favoritesRepository.deleteArtist(id);
   }
 }

@@ -5,10 +5,14 @@ import { TrackEntity } from 'src/modules/track/entities/track.entity';
 import { CreateTrackDto } from 'src/modules/track/dto/create-track.dto';
 import { UpdateTrackDto } from 'src/modules/track/dto/update-track.dto';
 import { assertIsDefined } from 'src/utils/assertIsDefined';
+import { FavoritesRepository } from 'src/db/favorites.repository';
 
 @Injectable()
 export class TrackService {
-  constructor(private readonly trackRepository: TrackRepository) {}
+  constructor(
+    private readonly trackRepository: TrackRepository,
+    private readonly favoritesRepository: FavoritesRepository,
+  ) {}
 
   public async getTrack(trackId: string): Promise<TrackEntity> {
     const track: TrackEntity | undefined = await this.trackRepository.get(
@@ -79,5 +83,6 @@ export class TrackService {
     );
 
     await this.trackRepository.delete(trackId);
+    await this.favoritesRepository.deleteTrack(trackId);
   }
 }

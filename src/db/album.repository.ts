@@ -6,8 +6,8 @@ import { AlbumEntity } from 'src/modules/album/entities/album.entity';
 export class AlbumRepository {
   private readonly db: Map<string, AlbumEntity> = new Map();
 
-  public async get(artistId: string): Promise<AlbumEntity | undefined> {
-    return this.db.get(artistId);
+  public async get(id: string): Promise<AlbumEntity | undefined> {
+    return this.db.get(id);
   }
 
   public async getAll(): Promise<AlbumEntity[]> {
@@ -17,26 +17,26 @@ export class AlbumRepository {
   public async create(props: MethodProps): Promise<AlbumEntity> {
     const { name, year, artistId } = props;
 
-    const newArtist = new AlbumEntity(name, year, artistId);
+    const album = new AlbumEntity(name, year, artistId);
 
-    this.db.set(newArtist.id, newArtist);
+    this.db.set(album.id, album);
 
-    return this.get(newArtist.id);
+    return this.get(album.id);
   }
 
   public async update(
-    artist: AlbumEntity,
+    album: AlbumEntity,
     props: MethodProps,
   ): Promise<AlbumEntity> {
-    artist.name = props.name;
-    artist.year = props.year;
-    artist.artistId = props.artistId ?? null;
+    album.name = props.name;
+    album.year = props.year;
+    album.artistId = props.artistId ?? null;
 
-    return artist;
+    return album;
   }
 
-  public async delete(artistId: string): Promise<void> {
-    this.db.delete(artistId);
+  public async delete(id: string): Promise<void> {
+    this.db.delete(id);
   }
 }
 
