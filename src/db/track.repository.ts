@@ -49,6 +49,16 @@ export class TrackRepository {
       }
     });
   }
+
+  public async removeAlbumId(albumId: string): Promise<void> {
+    const trackList = await this.getAll();
+
+    trackList.forEach((track) => {
+      if (track.albumId === albumId) {
+        track.albumId = null;
+      }
+    });
+  }
 }
 
 type MethodProps = {

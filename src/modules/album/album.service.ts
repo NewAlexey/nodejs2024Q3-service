@@ -6,12 +6,14 @@ import { UpdateAlbumDto } from 'src/modules/album/dto/update-album.dto';
 import { AlbumRepository } from 'src/db/album.repository';
 import { AlbumEntity } from 'src/modules/album/entities/album.entity';
 import { FavoritesRepository } from 'src/db/favorites.repository';
+import { TrackRepository } from 'src/db/track.repository';
 
 @Injectable()
 export class AlbumService {
   constructor(
     private readonly albumRepository: AlbumRepository,
     private readonly favoritesRepository: FavoritesRepository,
+    private readonly trackRepository: TrackRepository,
   ) {}
 
   public async getAlbum(id: string): Promise<AlbumEntity> {
@@ -75,6 +77,7 @@ export class AlbumService {
     );
 
     await this.albumRepository.delete(id);
+    await this.trackRepository.removeAlbumId(id);
     await this.favoritesRepository.deleteAlbum(id);
   }
 }
