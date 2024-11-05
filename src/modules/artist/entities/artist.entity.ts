@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { v4 } from 'uuid';
 
 export class ArtistEntity {
   public id: string;
@@ -6,7 +6,7 @@ export class ArtistEntity {
   public grammy: boolean;
 
   constructor(name: string, grammy: boolean) {
-    this.id = randomUUID();
+    this.id = v4();
     this.name = name;
     this.grammy = grammy;
   }

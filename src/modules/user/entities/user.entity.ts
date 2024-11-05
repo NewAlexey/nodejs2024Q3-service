@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { v4 } from 'uuid';
 
 export class UserEntity {
   public id: string;
@@ -13,7 +13,7 @@ export class UserEntity {
 
     this.login = login;
     this.password = password;
-    this.id = randomUUID();
+    this.id = v4();
     this.version = 1;
     this.createdAt = timestamp;
     this.updatedAt = timestamp;

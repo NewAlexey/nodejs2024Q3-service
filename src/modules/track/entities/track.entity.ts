@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { v4 } from 'uuid';
 
 export class TrackEntity {
   public id: string;
@@ -8,7 +8,7 @@ export class TrackEntity {
   public albumId: string | null;
 
   constructor(name: string, duration: number, artistId = null, albumId = null) {
-    this.id = randomUUID();
+    this.id = v4();
     this.name = name;
     this.duration = duration;
     this.artistId = artistId;

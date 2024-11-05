@@ -7,6 +7,7 @@ import { UserModule } from 'src/modules/user/user.module';
 import { TrackModule } from 'src/modules/track/track.module';
 import { AppRepositoryModule } from 'src/db/app.repository.module';
 import { ArtistModule } from 'src/modules/artist/artist.module';
+import { AlbumModule } from 'src/modules/album/album.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ArtistModule } from 'src/modules/artist/artist.module';
     UserModule,
     TrackModule,
     ArtistModule,
+    AlbumModule,
     AppRepositoryModule,
   ],
   controllers: [AppController],
