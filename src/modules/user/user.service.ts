@@ -7,6 +7,7 @@ import {
 import { CreateUserDto } from 'src/modules/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
 import { UserRepository } from 'src/db/user.repository';
+import { assertIsDefined } from 'src/utils/assertIsDefined';
 
 @Injectable()
 export class UserService {
@@ -15,9 +16,12 @@ export class UserService {
   public async getUser(userId: string): Promise<FrontUserEntityType> {
     const user: UserEntity | undefined = await this.userRepository.get(userId);
 
-    if (!user) {
-      throw new HttpException('User does not exist.', HttpStatus.NOT_FOUND);
-    }
+    assertIsDefined(
+      user,
+      HttpException,
+      'User does not exist.',
+      HttpStatus.NOT_FOUND,
+    );
 
     return UserEntity.removePassword(user);
   }
@@ -35,12 +39,12 @@ export class UserService {
       createUserDto,
     );
 
-    if (!user) {
-      throw new HttpException(
-        'User does not exist.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    assertIsDefined(
+      user,
+      HttpException,
+      'User does not exist.',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
 
     return UserEntity.removePassword(user);
   }
@@ -49,31 +53,33 @@ export class UserService {
     userId: string,
     updateUserDto: UpdateUserDto,
   ): Promise<FrontUserEntityType> {
-    const existUser: UserEntity | undefined = await this.userRepository.get(
-      userId,
+    const user: UserEntity | undefined = await this.userRepository.get(userId);
+
+    assertIsDefined(
+      user,
+      HttpException,
+      'User does not exist.',
+      HttpStatus.NOT_FOUND,
     );
 
-    if (!existUser) {
-      throw new HttpException('User does not exist.', HttpStatus.NOT_FOUND);
-    }
-
-    if (existUser.password !== updateUserDto.oldPassword) {
+    if (user.password !== updateUserDto.oldPassword) {
       throw new HttpException('Wrong password.', HttpStatus.FORBIDDEN);
     }
 
-    await this.userRepository.update(existUser, updateUserDto.newPassword);
+    await this.userRepository.update(user, updateUserDto.newPassword);
 
     return this.getUser(userId);
   }
 
   public async deleteUser(userId: string): Promise<void> {
-    const existUser: UserEntity | undefined = await this.userRepository.get(
-      userId,
-    );
+    const user: UserEntity | undefined = await this.userRepository.get(userId);
 
-    if (!existUser) {
-      throw new HttpException('User does not exist.', HttpStatus.NOT_FOUND);
-    }
+    assertIsDefined(
+      user,
+      HttpException,
+      'User does not exist.',
+      HttpStatus.NOT_FOUND,
+    );
 
     await this.userRepository.delete(userId);
   }

@@ -15,18 +15,29 @@ export class TrackRepository {
   }
 
   public async create(props: MethodProps): Promise<TrackEntity> {
-    return {} as TrackEntity;
+    const { name, duration, artistId, albumId } = props;
+
+    const newTrack = new TrackEntity(name, duration, artistId, albumId);
+
+    this.db.set(newTrack.id, newTrack);
+
+    return this.get(newTrack.id);
   }
 
   public async update(
     track: TrackEntity,
     props: MethodProps,
   ): Promise<TrackEntity> {
-    return {} as TrackEntity;
+    track.name = props.name;
+    track.duration = props.duration;
+    track.albumId = props.albumId ?? null;
+    track.artistId = props.artistId ?? null;
+
+    return track;
   }
 
   public async delete(trackId: string): Promise<void> {
-    return;
+    this.db.delete(trackId);
   }
 }
 

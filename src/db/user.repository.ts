@@ -31,7 +31,9 @@ export class UserRepository {
     existUser: UserEntity,
     newPassword: string,
   ): Promise<void> {
-    UserEntity.updateEntity(existUser, newPassword);
+    existUser.password = newPassword;
+    existUser.version += existUser.version;
+    existUser.updatedAt = Date.now();
   }
 
   public async delete(userId: string): Promise<void> {

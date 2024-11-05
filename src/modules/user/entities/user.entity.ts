@@ -26,14 +26,6 @@ export class UserEntity {
 
     return copiedUserEntity;
   }
-
-  static updateEntity(entity: UserEntity, newPassword: string): UserEntity {
-    entity.password = newPassword;
-    entity.version += entity.version;
-    entity.updatedAt = Date.now();
-
-    return entity;
-  }
 }
 
 export type FrontUserEntityType = Omit<UserEntity, 'password'>;

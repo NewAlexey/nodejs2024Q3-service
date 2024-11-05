@@ -22,9 +22,9 @@ export class TrackController {
 
   @Get('/:id')
   public getTrack(
-    @Param('id', new ParseUUIDPipe()) userId: string,
+    @Param('id', new ParseUUIDPipe()) trackId: string,
   ): Promise<TrackEntity> {
-    return this.trackService.getTrack(userId);
+    return this.trackService.getTrack(trackId);
   }
 
   @Get('')
@@ -41,17 +41,17 @@ export class TrackController {
 
   @Put('/:id')
   public updateTrack(
-    @Param('id', new ParseUUIDPipe()) userId: string,
+    @Param('id', new ParseUUIDPipe()) trackId: string,
     @Body() updateTrackDto: UpdateTrackDto,
   ): Promise<TrackEntity> {
-    return this.trackService.updateTrack(userId, updateTrackDto);
+    return this.trackService.updateTrack(trackId, updateTrackDto);
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   public deleteTrack(
-    @Param('id', new ParseUUIDPipe()) userId: string,
+    @Param('id', new ParseUUIDPipe()) trackId: string,
   ): Promise<void> {
-    return this.trackService.deleteTrack(userId);
+    return this.trackService.deleteTrack(trackId);
   }
 }
