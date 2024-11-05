@@ -6,8 +6,8 @@ import { TrackEntity } from 'src/modules/track/entities/track.entity';
 export class TrackRepository {
   private readonly db: Map<string, TrackEntity> = new Map();
 
-  public async get(trackId: string): Promise<TrackEntity | undefined> {
-    return this.db.get(trackId);
+  public async get(id: string): Promise<TrackEntity | undefined> {
+    return this.db.get(id);
   }
 
   public async getAll(): Promise<TrackEntity[]> {
@@ -36,8 +36,18 @@ export class TrackRepository {
     return track;
   }
 
-  public async delete(trackId: string): Promise<void> {
-    this.db.delete(trackId);
+  public async delete(id: string): Promise<void> {
+    this.db.delete(id);
+  }
+
+  public async removeArtistId(artistId: string): Promise<void> {
+    const trackList = await this.getAll();
+
+    trackList.forEach((track) => {
+      if (track.artistId === artistId) {
+        track.artistId = null;
+      }
+    });
   }
 }
 
