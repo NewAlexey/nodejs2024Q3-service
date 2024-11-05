@@ -38,6 +38,16 @@ export class AlbumRepository {
   public async delete(id: string): Promise<void> {
     this.db.delete(id);
   }
+
+  public async removeArtistId(artistId: string): Promise<void> {
+    const albumList = await this.getAll();
+
+    albumList.forEach((track) => {
+      if (track.artistId === artistId) {
+        track.artistId = null;
+      }
+    });
+  }
 }
 
 type MethodProps = {

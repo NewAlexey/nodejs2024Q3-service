@@ -7,6 +7,7 @@ import { CreateArtistDto } from 'src/modules/artist/dto/create-artist.dto';
 import { UpdateArtistDto } from 'src/modules/artist/dto/update-artist.dto';
 import { FavoritesRepository } from 'src/db/favorites.repository';
 import { TrackRepository } from 'src/db/track.repository';
+import { AlbumRepository } from 'src/db/album.repository';
 
 @Injectable()
 export class ArtistService {
@@ -14,6 +15,7 @@ export class ArtistService {
     private readonly artistRepository: ArtistRepository,
     private readonly favoritesRepository: FavoritesRepository,
     private readonly trackRepository: TrackRepository,
+    private readonly albumRepository: AlbumRepository,
   ) {}
 
   public async getArtist(id: string): Promise<ArtistEntity> {
@@ -86,6 +88,7 @@ export class ArtistService {
 
     await this.artistRepository.delete(id);
     await this.trackRepository.removeArtistId(id);
+    await this.albumRepository.removeArtistId(id);
     await this.favoritesRepository.deleteArtist(id);
   }
 }
