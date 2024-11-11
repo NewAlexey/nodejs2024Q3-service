@@ -18,10 +18,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
 
-  const data = stringify(document);
-  writeFile('api.yaml', data, (err) => {
-    if (err) console.log(err);
-  });
+  if (process.env.GENERATE_YAML) {
+    const data = stringify(document);
+
+    writeFile('doc/api.yaml', data, (err) => {
+      if (err) console.log(err);
+    });
+  }
 
   await app.listen(process.env.PORT);
 }
