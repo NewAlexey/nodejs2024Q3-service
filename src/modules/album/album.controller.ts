@@ -68,7 +68,7 @@ export class AlbumController {
   })
   @ApiResponse({
     status: 201,
-    description: 'Ok',
+    description: 'Created.',
     type: AlbumEntity,
   })
   @ApiBody({
@@ -124,7 +124,7 @@ export class AlbumController {
   })
   @ApiResponse({
     status: 204,
-    description: 'Ok',
+    description: 'No content.',
   })
   @ApiResponse({
     status: 400,

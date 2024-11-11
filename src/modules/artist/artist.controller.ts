@@ -68,7 +68,7 @@ export class ArtistController {
   })
   @ApiResponse({
     status: 201,
-    description: 'Ok',
+    description: 'Created.',
     type: ArtistEntity,
   })
   @ApiBody({
@@ -126,7 +126,7 @@ export class ArtistController {
   })
   @ApiResponse({
     status: 204,
-    description: 'Ok',
+    description: 'No content.',
   })
   @ApiResponse({
     status: 400,

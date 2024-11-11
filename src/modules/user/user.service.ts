@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import {
-  FrontUserEntityType,
+  FrontUserEntity,
   UserEntity,
 } from 'src/modules/user/entities/user.entity';
 import { CreateUserDto } from 'src/modules/user/dto/create-user.dto';
@@ -13,7 +13,7 @@ import { assertIsDefined } from 'src/utils/assertIsDefined';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async getUser(userId: string): Promise<FrontUserEntityType> {
+  public async getUser(userId: string): Promise<FrontUserEntity> {
     const user: UserEntity | undefined = await this.userRepository.get(userId);
 
     assertIsDefined(
@@ -26,7 +26,7 @@ export class UserService {
     return UserEntity.removePassword(user);
   }
 
-  public async getAllUsers(): Promise<FrontUserEntityType[]> {
+  public async getAllUsers(): Promise<FrontUserEntity[]> {
     const userList = await this.userRepository.getAll();
 
     return userList.map((user) => UserEntity.removePassword(user));
@@ -34,7 +34,7 @@ export class UserService {
 
   public async createUser(
     createUserDto: CreateUserDto,
-  ): Promise<FrontUserEntityType> {
+  ): Promise<FrontUserEntity> {
     const user: UserEntity | undefined = await this.userRepository.create(
       createUserDto,
     );
@@ -52,7 +52,7 @@ export class UserService {
   public async updateUser(
     userId: string,
     updateUserDto: UpdateUserDto,
-  ): Promise<FrontUserEntityType> {
+  ): Promise<FrontUserEntity> {
     const user: UserEntity | undefined = await this.userRepository.get(userId);
 
     assertIsDefined(
