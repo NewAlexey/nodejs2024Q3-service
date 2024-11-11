@@ -10,12 +10,14 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { AlbumService } from 'src/modules/album/album.service';
 import { AlbumEntity } from 'src/modules/album/entities/album.entity';
 import { CreateAlbumDto } from 'src/modules/album/dto/create-album.dto';
 import { UpdateAlbumDto } from 'src/modules/album/dto/update-album.dto';
 
+@ApiTags('album')
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
