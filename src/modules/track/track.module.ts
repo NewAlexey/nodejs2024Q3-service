@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TrackController } from 'src/modules/track/track.controller';
 import { TrackService } from 'src/modules/track/track.service';
-import { AppRepositoryModule } from 'src/db/app.repository.module';
+import { TrackEntity } from 'src/modules/track/entities/track.entity';
 
 @Module({
-  imports: [AppRepositoryModule],
+  imports: [TypeOrmModule.forFeature([TrackEntity])],
   controllers: [TrackController],
   providers: [TrackService],
 })
