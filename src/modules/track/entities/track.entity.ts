@@ -32,7 +32,8 @@ export class TrackEntity {
     example: '85a0c8c7-a17e-4c70-8240-e998d2a718e4',
     required: false,
   })
-  @ManyToOne(() => ArtistEntity, (artist) => artist.id, { nullable: true })
+  @Column({ default: null })
+  // @ManyToOne(() => ArtistEntity, (artist) => artist.id, { nullable: true })
   public artistId: string | null;
 
   @ApiProperty({
@@ -40,6 +41,7 @@ export class TrackEntity {
     example: 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6',
     required: false,
   })
-  @ManyToOne(() => AlbumEntity, (album) => album.id, { nullable: true })
+  @Column({ default: null })
+  // @ManyToOne(() => AlbumEntity, (album) => album.id, { nullable: true })
   public albumId: string | null;
 }

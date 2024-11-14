@@ -30,6 +30,7 @@ export class AlbumEntity {
     description: 'Artist id',
     example: '85a0c8c7-a17e-4c70-8240-e998d2a718e4',
   })
-  @ManyToOne(() => ArtistEntity, (artist) => artist.id)
+  @Column({ default: null })
+  // @ManyToOne(() => ArtistEntity, (artist) => artist.id)
   public artistId: string | null;
 }

@@ -26,9 +26,9 @@ export class ArtistEntity {
   @Column()
   public grammy: boolean;
 
-  @OneToMany(() => TrackEntity, (track) => track, { nullable: true })
-  tracks: TrackEntity[] | null;
-
-  @OneToMany(() => AlbumEntity, (album) => album, { nullable: true })
-  albums: AlbumEntity[] | null;
+  // @OneToMany(() => TrackEntity, (track) => track, { nullable: true })
+  // tracks: TrackEntity[] | null;
+  //
+  // @OneToMany(() => AlbumEntity, (album) => album, { nullable: true })
+  // albums: AlbumEntity[] | null;
 }

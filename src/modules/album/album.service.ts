@@ -6,12 +6,15 @@ import { assertIsDefined } from 'src/utils/assertIsDefined';
 import { CreateAlbumDto } from 'src/modules/album/dto/create-album.dto';
 import { UpdateAlbumDto } from 'src/modules/album/dto/update-album.dto';
 import { AlbumEntity } from 'src/modules/album/entities/album.entity';
+import { TrackEntity } from 'src/modules/track/entities/track.entity';
 
 @Injectable()
 export class AlbumService {
   constructor(
     @InjectRepository(AlbumEntity)
     private readonly albumRepository: Repository<AlbumEntity>,
+    @InjectRepository(TrackEntity)
+    private readonly trackRepository: Repository<TrackEntity>,
   ) {}
 
   public async getAlbum(id: string): Promise<AlbumEntity> {
@@ -82,5 +85,6 @@ export class AlbumService {
     );
 
     await this.albumRepository.delete(id);
+    await this.trackRepository.update({ albumId: id }, { albumId: null });
   }
 }
