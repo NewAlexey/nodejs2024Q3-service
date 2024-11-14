@@ -1,8 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-
-import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
-import { AlbumEntity } from 'src/modules/album/entities/album.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'track' })
 export class TrackEntity {
@@ -33,7 +30,6 @@ export class TrackEntity {
     required: false,
   })
   @Column({ default: null })
-  // @ManyToOne(() => ArtistEntity, (artist) => artist.id, { nullable: true })
   public artistId: string | null;
 
   @ApiProperty({
@@ -42,6 +38,5 @@ export class TrackEntity {
     required: false,
   })
   @Column({ default: null })
-  // @ManyToOne(() => AlbumEntity, (album) => album.id, { nullable: true })
   public albumId: string | null;
 }

@@ -1,7 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-
-import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'album' })
 export class AlbumEntity {
@@ -31,6 +29,5 @@ export class AlbumEntity {
     example: '85a0c8c7-a17e-4c70-8240-e998d2a718e4',
   })
   @Column({ default: null })
-  // @ManyToOne(() => ArtistEntity, (artist) => artist.id)
   public artistId: string | null;
 }

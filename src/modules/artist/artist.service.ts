@@ -6,12 +6,18 @@ import { assertIsDefined } from 'src/utils/assertIsDefined';
 import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
 import { CreateArtistDto } from 'src/modules/artist/dto/create-artist.dto';
 import { UpdateArtistDto } from 'src/modules/artist/dto/update-artist.dto';
+import { TrackEntity } from 'src/modules/track/entities/track.entity';
+import { AlbumEntity } from 'src/modules/album/entities/album.entity';
 
 @Injectable()
 export class ArtistService {
   constructor(
     @InjectRepository(ArtistEntity)
     private readonly artistRepository: Repository<ArtistEntity>,
+    @InjectRepository(TrackEntity)
+    private readonly trackRepository: Repository<TrackEntity>,
+    @InjectRepository(AlbumEntity)
+    private readonly albumRepository: Repository<AlbumEntity>,
   ) {}
 
   public async getArtist(id: string): Promise<ArtistEntity> {
@@ -83,5 +89,7 @@ export class ArtistService {
     );
 
     await this.artistRepository.delete(id);
+    await this.trackRepository.update({ artistId: id }, { artistId: null });
+    await this.albumRepository.update({ artistId: id }, { artistId: null });
   }
 }
