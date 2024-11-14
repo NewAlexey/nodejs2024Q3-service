@@ -29,16 +29,5 @@ export class ArtistEntity {
     onDelete: 'CASCADE',
     nullable: true,
   })
-  // @JoinTable({
-  //   name: 'artist_favorite',
-  //   joinColumn: {
-  //     name: 'artistFavorite',
-  //     referencedColumnName: 'id',
-  //   },
-  //   inverseJoinColumn: {
-  //     name: 'favorite',
-  //     referencedColumnName: 'id',
-  //   },
-  // })
   public favorites: FavoriteEntity[];
 }

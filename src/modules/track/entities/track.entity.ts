@@ -45,16 +45,5 @@ export class TrackEntity {
     onDelete: 'CASCADE',
     nullable: true,
   })
-  // @JoinTable({
-  //   name: 'track_favorite',
-  //   joinColumn: {
-  //     name: 'trackFavorite',
-  //     referencedColumnName: 'id',
-  //   },
-  //   inverseJoinColumn: {
-  //     name: 'favorite',
-  //     referencedColumnName: 'id',
-  //   },
-  // })
   public favorites: FavoriteEntity[];
 }

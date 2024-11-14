@@ -36,16 +36,5 @@ export class AlbumEntity {
     onDelete: 'CASCADE',
     nullable: true,
   })
-  // @JoinTable({
-  //   name: 'album_favorite',
-  //   joinColumn: {
-  //     name: 'albumFavorite',
-  //     referencedColumnName: 'id',
-  //   },
-  //   inverseJoinColumn: {
-  //     name: 'favorite',
-  //     referencedColumnName: 'id',
-  //   },
-  // })
   public favorites: FavoriteEntity[];
 }
