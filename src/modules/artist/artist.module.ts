@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ArtistController } from 'src/modules/artist/artist.controller';
 import { ArtistService } from 'src/modules/artist/artist.service';
-import { AppRepositoryModule } from 'src/db/app.repository.module';
+import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
 
 @Module({
-  imports: [AppRepositoryModule],
+  imports: [TypeOrmModule.forFeature([ArtistEntity])],
   controllers: [ArtistController],
   providers: [ArtistService],
 })
