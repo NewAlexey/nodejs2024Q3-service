@@ -1090,7 +1090,7 @@ components:
         tracks:
           description: "User's list of favorites artists."
           example:
-            - [object Function]
+            - null
           type: "array"
           items:
             type: "string"

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { FavoriteEntity } from 'src/modules/favorite/entities/favorite.entity';
 
 @Entity({ name: 'album' })
 export class AlbumEntity {
@@ -30,4 +31,21 @@ export class AlbumEntity {
   })
   @Column({ default: null })
   public artistId: string | null;
+
+  @ManyToMany(() => FavoriteEntity, (favourite) => favourite.tracks, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  // @JoinTable({
+  //   name: 'album_favorite',
+  //   joinColumn: {
+  //     name: 'albumFavorite',
+  //     referencedColumnName: 'id',
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'favorite',
+  //     referencedColumnName: 'id',
+  //   },
+  // })
+  public favorites: FavoriteEntity[];
 }

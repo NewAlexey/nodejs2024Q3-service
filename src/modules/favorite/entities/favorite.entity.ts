@@ -14,23 +14,32 @@ export class FavoriteEntity {
     description: "User's list of favorites artists.",
     example: [ArtistEntity],
   })
-  @ManyToMany(() => ArtistEntity, { cascade: true, eager: true })
-  @JoinTable({ name: 'favs_artist' })
+  @ManyToMany(() => ArtistEntity, (artist) => artist.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
   public artists: ArtistEntity[];
 
   @ApiProperty({
     description: "User's list of favorites artists.",
     example: [AlbumEntity],
   })
-  @ManyToMany(() => AlbumEntity, { cascade: true, eager: true })
-  @JoinTable({ name: 'favs_album' })
+  @ManyToMany(() => AlbumEntity, (album) => album.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
   public albums: AlbumEntity[];
 
   @ApiProperty({
     description: "User's list of favorites artists.",
     example: [TrackEntity],
   })
-  @ManyToMany(() => TrackEntity, { cascade: true, eager: true })
-  @JoinTable({ name: 'favs_tracks' })
+  @ManyToMany(() => TrackEntity, (track) => track.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
   public tracks: TrackEntity[];
 }

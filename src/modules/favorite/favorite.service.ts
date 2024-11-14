@@ -55,11 +55,9 @@ export class FavoriteService {
     );
 
     const favorite: FavoriteEntity = await this.getFavorites();
-    const updatedTrackList = [...favorite.tracks, track];
+    favorite.tracks = [...favorite.tracks, track];
 
-    await this.favoriteRepository.update(favorite.id, {
-      tracks: updatedTrackList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 
   public async removeTrack(id: string): Promise<void> {
@@ -75,11 +73,9 @@ export class FavoriteService {
       HttpStatus.NOT_FOUND,
     );
 
-    const updatedTrackList = favorite.tracks.filter((track) => track.id !== id);
+    favorite.tracks = favorite.tracks.filter((track) => track.id !== id);
 
-    await this.favoriteRepository.update(favorite.id, {
-      tracks: updatedTrackList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 
   public async addArtist(id: string): Promise<void> {
@@ -96,11 +92,9 @@ export class FavoriteService {
     );
 
     const favorite: FavoriteEntity = await this.getFavorites();
-    const updatedArtistList = [...favorite.artists, artist];
+    favorite.artists = [...favorite.artists, artist];
 
-    await this.favoriteRepository.update(favorite.id, {
-      artists: updatedArtistList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 
   public async removeArtist(id: string): Promise<void> {
@@ -116,13 +110,9 @@ export class FavoriteService {
       HttpStatus.NOT_FOUND,
     );
 
-    const updatedArtistList = favorite.artists.filter(
-      (artist) => artist.id !== id,
-    );
+    favorite.artists = favorite.artists.filter((artist) => artist.id !== id);
 
-    await this.favoriteRepository.update(favorite.id, {
-      artists: updatedArtistList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 
   public async addAlbum(id: string): Promise<void> {
@@ -138,11 +128,9 @@ export class FavoriteService {
     );
 
     const favorite: FavoriteEntity = await this.getFavorites();
-    const updatedAlbumList = [...favorite.albums, album];
+    favorite.albums = [...favorite.albums, album];
 
-    await this.favoriteRepository.update(favorite.id, {
-      albums: updatedAlbumList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 
   public async removeAlbum(id: string): Promise<void> {
@@ -158,10 +146,8 @@ export class FavoriteService {
       HttpStatus.NOT_FOUND,
     );
 
-    const updatedAlbumList = favorite.albums.filter((album) => album.id !== id);
+    favorite.albums = favorite.albums.filter((album) => album.id !== id);
 
-    await this.favoriteRepository.update(favorite.id, {
-      albums: updatedAlbumList,
-    });
+    await this.favoriteRepository.save(favorite);
   }
 }
