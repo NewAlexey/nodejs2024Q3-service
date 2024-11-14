@@ -1,4 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import {
   FrontUserEntity,
@@ -6,15 +8,19 @@ import {
 } from 'src/modules/user/entities/user.entity';
 import { CreateUserDto } from 'src/modules/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
-import { UserRepository } from 'src/db/user.repository';
 import { assertIsDefined } from 'src/utils/assertIsDefined';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
-  public async getUser(userId: string): Promise<FrontUserEntity> {
-    const user: UserEntity | undefined = await this.userRepository.get(userId);
+  public async getUser(id: string): Promise<FrontUserEntity> {
+    const user: UserEntity | undefined = await this.userRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       user,
@@ -27,7 +33,7 @@ export class UserService {
   }
 
   public async getAllUsers(): Promise<FrontUserEntity[]> {
-    const userList = await this.userRepository.getAll();
+    const userList = await this.userRepository.find();
 
     return userList.map((user) => UserEntity.removePassword(user));
   }
@@ -35,9 +41,8 @@ export class UserService {
   public async createUser(
     createUserDto: CreateUserDto,
   ): Promise<FrontUserEntity> {
-    const user: UserEntity | undefined = await this.userRepository.create(
-      createUserDto,
-    );
+    const user: UserEntity | undefined =
+      this.userRepository.create(createUserDto);
 
     assertIsDefined(
       user,
@@ -46,14 +51,18 @@ export class UserService {
       HttpStatus.INTERNAL_SERVER_ERROR,
     );
 
-    return UserEntity.removePassword(user);
+    await this.userRepository.insert(user);
+
+    return this.getUser(user.id);
   }
 
   public async updateUser(
-    userId: string,
+    id: string,
     updateUserDto: UpdateUserDto,
   ): Promise<FrontUserEntity> {
-    const user: UserEntity | undefined = await this.userRepository.get(userId);
+    const user: UserEntity | undefined = await this.userRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       user,
@@ -66,13 +75,17 @@ export class UserService {
       throw new HttpException('Wrong password.', HttpStatus.FORBIDDEN);
     }
 
-    await this.userRepository.update(user, updateUserDto.newPassword);
+    user.password = updateUserDto.newPassword;
 
-    return this.getUser(userId);
+    await this.userRepository.update(id, user);
+
+    return this.getUser(id);
   }
 
-  public async deleteUser(userId: string): Promise<void> {
-    const user: UserEntity | undefined = await this.userRepository.get(userId);
+  public async deleteUser(id: string): Promise<void> {
+    const user: UserEntity | undefined = await this.userRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       user,
@@ -81,6 +94,6 @@ export class UserService {
       HttpStatus.NOT_FOUND,
     );
 
-    await this.userRepository.delete(userId);
+    await this.userRepository.delete(id);
   }
 }

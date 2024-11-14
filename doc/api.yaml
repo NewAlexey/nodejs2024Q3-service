@@ -1074,21 +1074,21 @@ components:
       type: "object"
       properties:
         artists:
-          description: "'User's list of favorites artists."
+          description: "User's list of favorites artists."
           example:
             - [object Function]
           type: "array"
           items:
             type: "string"
         albums:
-          description: "'User's list of favorites artists."
+          description: "User's list of favorites artists."
           example:
             - [object Function]
           type: "array"
           items:
             type: "string"
         tracks:
-          description: "'User's list of favorites artists."
+          description: "User's list of favorites artists."
           example:
             - [object Function]
           type: "array"
