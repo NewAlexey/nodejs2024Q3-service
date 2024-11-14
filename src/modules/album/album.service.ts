@@ -1,23 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { assertIsDefined } from 'src/utils/assertIsDefined';
 import { CreateAlbumDto } from 'src/modules/album/dto/create-album.dto';
 import { UpdateAlbumDto } from 'src/modules/album/dto/update-album.dto';
-import { AlbumRepository } from 'src/db/album.repository';
 import { AlbumEntity } from 'src/modules/album/entities/album.entity';
-import { FavoritesRepository } from 'src/db/favorites.repository';
-import { TrackRepository } from 'src/db/track.repository';
 
 @Injectable()
 export class AlbumService {
   constructor(
-    private readonly albumRepository: AlbumRepository,
-    private readonly favoritesRepository: FavoritesRepository,
-    private readonly trackRepository: TrackRepository,
+    @InjectRepository(AlbumEntity)
+    private readonly albumRepository: Repository<AlbumEntity>,
   ) {}
 
   public async getAlbum(id: string): Promise<AlbumEntity> {
-    const album: AlbumEntity | undefined = await this.albumRepository.get(id);
+    const album: AlbumEntity | undefined = await this.albumRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       album,
@@ -30,13 +30,12 @@ export class AlbumService {
   }
 
   public async getAllAlbums(): Promise<AlbumEntity[]> {
-    return this.albumRepository.getAll();
+    return this.albumRepository.find();
   }
 
   public async createAlbum(createDto: CreateAlbumDto): Promise<AlbumEntity> {
-    const album: AlbumEntity | undefined = await this.albumRepository.create(
-      createDto,
-    );
+    const album: AlbumEntity | undefined =
+      this.albumRepository.create(createDto);
 
     assertIsDefined(
       album,
@@ -45,6 +44,8 @@ export class AlbumService {
       HttpStatus.INTERNAL_SERVER_ERROR,
     );
 
+    await this.albumRepository.insert(album);
+
     return album;
   }
 
@@ -52,7 +53,9 @@ export class AlbumService {
     id: string,
     updateDto: UpdateAlbumDto,
   ): Promise<AlbumEntity> {
-    const album: AlbumEntity | undefined = await this.albumRepository.get(id);
+    const album: AlbumEntity | undefined = await this.albumRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       album,
@@ -61,13 +64,15 @@ export class AlbumService {
       HttpStatus.NOT_FOUND,
     );
 
-    await this.albumRepository.update(album, updateDto);
+    await this.albumRepository.update(id, updateDto);
 
     return this.getAlbum(id);
   }
 
   public async deleteAlbum(id: string): Promise<void> {
-    const album: AlbumEntity | undefined = await this.albumRepository.get(id);
+    const album: AlbumEntity | undefined = await this.albumRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       album,
@@ -77,7 +82,5 @@ export class AlbumService {
     );
 
     await this.albumRepository.delete(id);
-    await this.trackRepository.removeAlbumId(id);
-    await this.favoritesRepository.deleteAlbum(id);
   }
 }
