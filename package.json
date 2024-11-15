@@ -24,6 +24,7 @@
     "db:drop": "npm run typeorm schema:drop",
     "db:create": "npm run typeorm migration:generate",
     "db:migrate": "npm run typeorm migration:run",
+    "db:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/config/ormseedconfig.ts migration:run",
     "db:revert": "npm run typeorm migration:revert",
     "rd": "yarn db:drop && yarn db:migrate && yarn db:seed"
   },

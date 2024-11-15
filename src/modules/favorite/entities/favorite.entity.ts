@@ -11,8 +11,9 @@ export class FavoriteEntity {
   public id: string;
 
   @ApiProperty({
+    isArray: true,
+    type: () => ArtistEntity,
     description: "User's list of favorites artists.",
-    example: [ArtistEntity],
   })
   @ManyToMany(() => ArtistEntity, (artist) => artist.favorites, {
     cascade: true,
@@ -22,8 +23,9 @@ export class FavoriteEntity {
   public artists: ArtistEntity[];
 
   @ApiProperty({
-    description: "User's list of favorites artists.",
-    example: [AlbumEntity],
+    isArray: true,
+    type: () => AlbumEntity,
+    description: "User's list of favorites albums.",
   })
   @ManyToMany(() => AlbumEntity, (album) => album.favorites, {
     cascade: true,
@@ -33,8 +35,9 @@ export class FavoriteEntity {
   public albums: AlbumEntity[];
 
   @ApiProperty({
-    description: "User's list of favorites artists.",
-    example: [TrackEntity],
+    isArray: true,
+    type: () => TrackEntity,
+    description: "User's list of favorites tracks.",
   })
   @ManyToMany(() => TrackEntity, (track) => track.favorites, {
     cascade: true,
