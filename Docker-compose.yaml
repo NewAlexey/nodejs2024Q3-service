@@ -26,6 +26,15 @@ services:
       DB_HOST: '${DB_HOST}'
     ports:
       - '${PORT}:${PORT}'
+    build:
+      context: .
+    develop:
+      watch:
+        - path: ./src
+          action: sync+restart
+          target: /app/src
+          ignore:
+            - node_modules
     depends_on:
       - postgres
     restart: always
