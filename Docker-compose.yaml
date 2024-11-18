@@ -13,6 +13,7 @@ services:
       - '${DB_EXPOSE_PORT}:${DB_PORT}'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
     restart: always
     networks:
       - my-network
@@ -43,6 +44,7 @@ services:
 
 volumes:
   postgres_data:
+  postgres_logs:
 
 networks:
   my-network:
