@@ -29,7 +29,8 @@
     "db:revert": "npm run typeorm migration:revert",
     "rd": "yarn db:drop && yarn db:migrate && yarn db:seed",
     "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "docker:scan": "docker scout cves newalexey/rs-home-library-pstgrs && docker scout cves newalexey/rs-home-library-app"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
