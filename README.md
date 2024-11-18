@@ -9,10 +9,16 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/NewAlexey/nodejs2024Q3-service.git
 ```
 
 ## Preparations
+
+Change git branch to `develop_task-2`
+
+```
+git checkout develop_task-2
+```
 
 Create `.env` file in app root folder. Just copy `.env.example` file and rename it into `.env`.
 
