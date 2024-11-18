@@ -12,12 +12,16 @@
 git clone {repository URL}
 ```
 
+## Preparations
+
+Create `.env` file in app root folder. Just copy `.env.example` file and rename it into `.env`.
+
 ## Running application via Docker
 
 ```
 npm run docker:up
 ```
-
+Wait for migrations are finished.
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
