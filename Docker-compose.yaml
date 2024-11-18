@@ -28,7 +28,6 @@ services:
       - '${PORT}:${PORT}'
     depends_on:
       - postgres
-    command: sh -c "npm run rd && npm start"
     restart: always
     networks:
       - my-network
