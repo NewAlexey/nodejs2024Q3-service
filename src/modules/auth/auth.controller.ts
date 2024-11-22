@@ -13,12 +13,14 @@ export class AuthController {
 
   @Public()
   @Post('/signup')
-  public async signUp(@Body() signUpUserDto: SignActionUserDto): Promise<void> {
+  public async signUp(
+    @Body() signUpUserDto: SignActionUserDto,
+  ): Promise<{ id: string }> {
     return this.authService.signUpUser(signUpUserDto);
   }
 
   @Public()
-  @Post('/signin')
+  @Post('/login')
   public async signIn(
     @Body() signInUserDto: SignActionUserDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {

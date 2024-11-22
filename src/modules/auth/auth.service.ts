@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { TokenExpiredError } from 'jsonwebtoken';
 
 import { SignActionUserDto } from 'src/modules/auth/dto/sign-action-user.dto';
 import { UserService } from 'src/modules/user/user.service';
 import { HashService } from 'src/modules/auth/hash.service';
 import { assertIsDefined } from 'src/utils/assertIsDefined';
 import { JwtService } from 'src/modules/auth/jwt.service';
-import { TokenExpiredError } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -15,15 +15,17 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  public async signUpUser(props: SignActionUserDto): Promise<void> {
+  public async signUpUser(props: SignActionUserDto): Promise<{ id: string }> {
     const { login, password } = props;
 
     const hashedPassword = await this.hashService.hashValue(password);
 
-    await this.userService.createUser({
+    const user = await this.userService.createUser({
       login,
       password: hashedPassword,
     });
+
+    return { id: user.id };
   }
 
   public async signInUser(
