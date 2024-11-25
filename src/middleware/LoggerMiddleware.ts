@@ -12,7 +12,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const requestLogMessage = this.createRequestLogMessage(request);
       const responseLogMessage = this.createResponseLogMessage(response);
       const logMessage = `${new Date().toISOString()} | Request - ${requestLogMessage} | Response - ${responseLogMessage}`;
-      this.logger.log(logMessage);
+      this.logger.log(logMessage, 'Query Middleware');
     });
 
     next();
@@ -26,9 +26,9 @@ export class LoggerMiddleware implements NestMiddleware {
   }
 
   private createResponseLogMessage(response: Response): string {
-    const { statusCode } = response;
+    const { statusCode, statusMessage } = response;
 
-    return `[code - ${statusCode}]`;
+    return `[code - ${statusCode}, message - ${statusMessage}]`;
   }
 
   private getBodyDataMessage(body: any): string {

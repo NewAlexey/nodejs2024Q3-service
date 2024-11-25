@@ -12,4 +12,11 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('error')
+  @Public()
+  getErroredHello(): string {
+    JSON.parse('?error/');
+    return this.appService.getHello();
+  }
 }
