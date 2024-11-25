@@ -16,6 +16,15 @@ git clone https://github.com/NewAlexey/nodejs2024Q3-service.git
 
 <hr>
 
+## Description
+
+To check this task you need:
+1) Run container with `postgresql`;
+2) Run migrations for database;
+3) Start application;
+4) Run test script;
+5) Check other functionality - logging, file-logger, logs-level, etc.
+
 ## Preparations
 
 Change git branch to `develop_task-3`
