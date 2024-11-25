@@ -109,6 +109,8 @@ You can change log level and make request on `Hello world` route for testing thi
 
 `DB_PORT` - database port.
 
+`APP_DB_PORT` - application database port. Using for connect application with database.
+
 `DB_EXPOSE_PORT` - expose database port. Using for escape port conflicts if user has locally installed `postgresql` database.
 
 `DB_USER_NAME` - database username.
