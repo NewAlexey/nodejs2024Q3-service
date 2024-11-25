@@ -17,7 +17,7 @@ export const getTypeormOptions = async (
 ): Promise<DataSourceOptions> => {
   return {
     type: 'postgres',
-    port: configService.get('DB_PORT'),
+    port: configService.get('APP_DB_PORT'),
     host: configService.get('DB_HOST'),
     username: configService.get('DB_USER_NAME'),
     password: configService.get('DB_PASSWORD'),
@@ -27,7 +27,7 @@ export const getTypeormOptions = async (
 };
 
 export const ormConfig = {
-  port: Number(process.env.DB_PORT),
+  port: Number(process.env.APP_DB_PORT),
   host: process.env.DB_HOST,
   username: process.env.DB_USER_NAME,
   password: process.env.DB_PASSWORD,

@@ -1,6 +1,12 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
 
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
@@ -10,6 +16,11 @@ import { ArtistModule } from 'src/modules/artist/artist.module';
 import { AlbumModule } from 'src/modules/album/album.module';
 import { FavoriteModule } from 'src/modules/favorite/favorite.module';
 import { getTypeormOptions } from 'src/config/ormconfig';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { AuthGuard } from 'src/modules/auth/permission/auth.guard';
+import { JwtService } from 'src/modules/auth/jwt.service';
+import { LoggerMiddleware } from 'src/middleware/LoggerMiddleware';
+import { LoggerModule } from 'src/modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -19,6 +30,8 @@ import { getTypeormOptions } from 'src/config/ormconfig';
       inject: [ConfigService],
       useFactory: getTypeormOptions,
     }),
+    LoggerModule,
+    AuthModule,
     UserModule,
     TrackModule,
     ArtistModule,
@@ -26,6 +39,20 @@ import { getTypeormOptions } from 'src/config/ormconfig';
     FavoriteModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    JwtService,
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    return consumer.apply(LoggerMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

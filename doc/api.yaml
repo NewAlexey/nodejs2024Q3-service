@@ -7,6 +7,58 @@ paths:
       responses:
         200:
           description: ""
+  /error:
+    get:
+      operationId: "AppController_getErroredHello"
+      parameters: []
+      responses:
+        200:
+          description: ""
+  /auth/signup:
+    post:
+      operationId: "AuthController_signUp"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignActionUserDto"
+      responses:
+        201:
+          description: ""
+      tags:
+        - "auth"
+  /auth/login:
+    post:
+      operationId: "AuthController_signIn"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignActionUserDto"
+      responses:
+        201:
+          description: ""
+      tags:
+        - "auth"
+  /auth/refresh:
+    post:
+      operationId: "AuthController_refresh"
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshTokenDto"
+      responses:
+        201:
+          description: ""
+      tags:
+        - "auth"
   /user/{id}:
     get:
       operationId: "UserController_getUser"
@@ -786,6 +838,28 @@ tags: []
 servers: []
 components:
   schemas:
+    SignActionUserDto:
+      type: "object"
+      properties:
+        login:
+          type: "string"
+          description: "User name"
+          example: "Alexey"
+        password:
+          type: "string"
+          description: "User password"
+          example: "qwerty"
+      required:
+        - "login"
+        - "password"
+    RefreshTokenDto:
+      type: "object"
+      properties:
+        refreshToken:
+          type: "string"
+          description: "Refresh token."
+      required:
+        - "refreshToken"
     FrontUserEntity:
       type: "object"
       properties:

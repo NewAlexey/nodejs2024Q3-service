@@ -17,6 +17,12 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  public async getUserByLogin(login: string): Promise<UserEntity> {
+    return await this.userRepository.findOne({
+      where: { login },
+    });
+  }
+
   public async getUser(id: string): Promise<FrontUserEntity> {
     const user: UserEntity | undefined = await this.userRepository.findOne({
       where: { id },
@@ -41,6 +47,17 @@ export class UserService {
   public async createUser(
     createUserDto: CreateUserDto,
   ): Promise<FrontUserEntity> {
+    const existUser: UserEntity | undefined = await this.getUserByLogin(
+      createUserDto.login,
+    );
+
+    if (existUser) {
+      throw new HttpException(
+        'User with this login already exist',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const user: UserEntity | undefined =
       this.userRepository.create(createUserDto);
 
