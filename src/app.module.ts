@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
@@ -14,6 +19,8 @@ import { getTypeormOptions } from 'src/config/ormconfig';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { AuthGuard } from 'src/modules/auth/permission/auth.guard';
 import { JwtService } from 'src/modules/auth/jwt.service';
+import { LoggerMiddleware } from 'src/middleware/LoggerMiddleware';
+import { LoggerModule } from 'src/modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -23,6 +30,7 @@ import { JwtService } from 'src/modules/auth/jwt.service';
       inject: [ConfigService],
       useFactory: getTypeormOptions,
     }),
+    LoggerModule,
     AuthModule,
     UserModule,
     TrackModule,
@@ -40,4 +48,11 @@ import { JwtService } from 'src/modules/auth/jwt.service';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    return consumer.apply(LoggerMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
