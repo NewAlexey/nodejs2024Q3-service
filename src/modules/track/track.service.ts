@@ -1,23 +1,23 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
-import { TrackRepository } from 'src/db/track.repository';
 import { TrackEntity } from 'src/modules/track/entities/track.entity';
 import { CreateTrackDto } from 'src/modules/track/dto/create-track.dto';
 import { UpdateTrackDto } from 'src/modules/track/dto/update-track.dto';
 import { assertIsDefined } from 'src/utils/assertIsDefined';
-import { FavoritesRepository } from 'src/db/favorites.repository';
 
 @Injectable()
 export class TrackService {
   constructor(
-    private readonly trackRepository: TrackRepository,
-    private readonly favoritesRepository: FavoritesRepository,
+    @InjectRepository(TrackEntity)
+    private readonly trackRepository: Repository<TrackEntity>,
   ) {}
 
-  public async getTrack(trackId: string): Promise<TrackEntity> {
-    const track: TrackEntity | undefined = await this.trackRepository.get(
-      trackId,
-    );
+  public async getTrack(id: string): Promise<TrackEntity> {
+    const track: TrackEntity | undefined = await this.trackRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       track,
@@ -30,15 +30,14 @@ export class TrackService {
   }
 
   public async getAllTracks(): Promise<TrackEntity[]> {
-    return this.trackRepository.getAll();
+    return this.trackRepository.find();
   }
 
   public async createTrack(
     createTrackDto: CreateTrackDto,
   ): Promise<TrackEntity> {
-    const track: TrackEntity | undefined = await this.trackRepository.create(
-      createTrackDto,
-    );
+    const track: TrackEntity | undefined =
+      this.trackRepository.create(createTrackDto);
 
     assertIsDefined(
       track,
@@ -47,16 +46,18 @@ export class TrackService {
       HttpStatus.INTERNAL_SERVER_ERROR,
     );
 
+    await this.trackRepository.insert(track);
+
     return track;
   }
 
   public async updateTrack(
-    trackId: string,
+    id: string,
     updateTrackDto: UpdateTrackDto,
   ): Promise<TrackEntity> {
-    const track: TrackEntity | undefined = await this.trackRepository.get(
-      trackId,
-    );
+    const track: TrackEntity | undefined = await this.trackRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       track,
@@ -65,15 +66,15 @@ export class TrackService {
       HttpStatus.NOT_FOUND,
     );
 
-    await this.trackRepository.update(track, updateTrackDto);
+    await this.trackRepository.update(id, updateTrackDto);
 
-    return this.getTrack(trackId);
+    return this.getTrack(id);
   }
 
-  public async deleteTrack(trackId: string): Promise<void> {
-    const track: TrackEntity | undefined = await this.trackRepository.get(
-      trackId,
-    );
+  public async deleteTrack(id: string): Promise<void> {
+    const track: TrackEntity | undefined = await this.trackRepository.findOne({
+      where: { id },
+    });
 
     assertIsDefined(
       track,
@@ -82,7 +83,6 @@ export class TrackService {
       HttpStatus.NOT_FOUND,
     );
 
-    await this.trackRepository.delete(trackId);
-    await this.favoritesRepository.deleteTrack(trackId);
+    await this.trackRepository.delete(id);
   }
 }

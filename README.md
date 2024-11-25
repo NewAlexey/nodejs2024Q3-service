@@ -4,28 +4,38 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Download & Install Docker](https://www.docker.com/)
 
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/NewAlexey/nodejs2024Q3-service.git
 ```
 
-## Installing NPM modules
+## Preparations
+
+Change git branch to `develop_task-2`
 
 ```
-npm install
+git checkout develop_task-2
 ```
 
-## Running application
+Create `.env` file in app root folder. Just copy `.env.example` file and rename it into `.env`.
+
+## Running application via Docker
 
 ```
-npm start
+npm run docker:up
 ```
-
+Wait for migrations are finished.
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Stopping Docker application 
+
+```
+npm run docker:down
+```
 
 ## Testing
 
@@ -35,15 +45,5 @@ To run all tests without authorization
 
 ```
 npm run test
-```
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-```
-npm run format
 ```
 

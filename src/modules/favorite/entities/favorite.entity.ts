@@ -1,24 +1,48 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import { ArtistEntity } from 'src/modules/artist/entities/artist.entity';
 import { AlbumEntity } from 'src/modules/album/entities/album.entity';
 import { TrackEntity } from 'src/modules/track/entities/track.entity';
-import { ApiProperty } from '@nestjs/swagger';
 
+@Entity({ name: 'favs' })
 export class FavoriteEntity {
-  @ApiProperty({
-    description: "'User's list of favorites artists.",
-    example: [ArtistEntity],
-  })
-  public artists: ArtistEntity[] = [];
+  @PrimaryGeneratedColumn()
+  public id: string;
 
   @ApiProperty({
-    description: "'User's list of favorites artists.",
-    example: [AlbumEntity],
+    isArray: true,
+    type: () => ArtistEntity,
+    description: "User's list of favorites artists.",
   })
-  public albums: AlbumEntity[] = [];
+  @ManyToMany(() => ArtistEntity, (artist) => artist.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  public artists: ArtistEntity[];
 
   @ApiProperty({
-    description: "'User's list of favorites artists.",
-    example: [TrackEntity],
+    isArray: true,
+    type: () => AlbumEntity,
+    description: "User's list of favorites albums.",
   })
-  public tracks: TrackEntity[] = [];
+  @ManyToMany(() => AlbumEntity, (album) => album.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  public albums: AlbumEntity[];
+
+  @ApiProperty({
+    isArray: true,
+    type: () => TrackEntity,
+    description: "User's list of favorites tracks.",
+  })
+  @ManyToMany(() => TrackEntity, (track) => track.favorites, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinTable()
+  public tracks: TrackEntity[];
 }

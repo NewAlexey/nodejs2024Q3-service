@@ -1074,26 +1074,20 @@ components:
       type: "object"
       properties:
         artists:
-          description: "'User's list of favorites artists."
-          example:
-            - [object Function]
+          description: "User's list of favorites artists."
           type: "array"
           items:
-            type: "string"
+            $ref: "#/components/schemas/ArtistEntity"
         albums:
-          description: "'User's list of favorites artists."
-          example:
-            - [object Function]
+          description: "User's list of favorites albums."
           type: "array"
           items:
-            type: "string"
+            $ref: "#/components/schemas/AlbumEntity"
         tracks:
-          description: "'User's list of favorites artists."
-          example:
-            - [object Function]
+          description: "User's list of favorites tracks."
           type: "array"
           items:
-            type: "string"
+            $ref: "#/components/schemas/TrackEntity"
       required:
         - "artists"
         - "albums"
