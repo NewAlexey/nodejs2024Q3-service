@@ -7,9 +7,12 @@ import { stringify } from 'json-to-pretty-yaml';
 import { AppModule } from 'src/app.module';
 import { CatchEverythingFilter } from 'src/filters/exception.filter';
 import { LoggerService } from 'src/modules/logger/logger.service';
+import { getAppLogsLevel } from 'src/utils/getAppLogsLevel';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: getAppLogsLevel(),
+  });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const httpAdapter = app.get(HttpAdapterHost);

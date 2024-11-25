@@ -6,11 +6,15 @@
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 - Docker - [Download & Install Docker](https://www.docker.com/)
 
+<hr>
+
 ## Downloading
 
 ```
 git clone https://github.com/NewAlexey/nodejs2024Q3-service.git
 ```
+
+<hr>
 
 ## Preparations
 
@@ -21,6 +25,8 @@ git checkout develop_task-3
 ```
 
 Create `.env` file in app root folder. Just copy `.env.example` file and rename it into `.env`.
+
+<hr>
 
 ## Steps to run project
 
@@ -45,11 +51,15 @@ npm run rd
 npm run start
 ```
 
+<hr>
+
 ## Stop Docker application 
 
 ```
 npm run docker:down
 ```
+
+<hr>
 
 ## Testing
 
@@ -61,7 +71,27 @@ To run all tests with authorization
 npm run test:auth
 ```
 
-### Information about `env` variables
+<hr>
+
+## Information about `log level`
+
+Nestjs logger has next levels of logging (where number - is my log level implementation)
+
+- `error` - 0
+- `warn` - 1
+- `log` - 2
+- `debug` - 3
+- `verbose` - 4
+
+So, if you set 'env' variable `LOG_LEVEL=0` - app will be logging only 'error' level.
+If you set `LOG_LEVEL=2` - app will be logging `0, 1, 2` levels - `error`, `warn` and `log`.
+
+I have implement functionality for testing it in `{host}:{port}/` (Hello world route).
+You can change log level and make request on `Hello world` route for testing this functionality.
+
+<hr>
+
+## Information about `env` variables
 
 `PORT` - application port;
 
@@ -86,6 +116,8 @@ npm run test:auth
 `DB_PASSWORD`- database username password.
 
 `DB_NAME` - database name.
+
+`LOG_LEVEL` - logging level.
 
 `LOG_FOLDER` - log folder name.
 
