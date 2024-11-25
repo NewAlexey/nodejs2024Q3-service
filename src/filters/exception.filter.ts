@@ -15,16 +15,16 @@ export class CatchEverythingFilter implements ExceptionFilter {
     private readonly logger: LoggerService,
   ) {
     process.on('unhandledRejection', (err) => {
-      this.logger.error(err);
+      this.logger.error(err, 'CatchFilter');
     });
 
     process.on('uncaughtException', (err) => {
-      this.logger.error(err);
+      this.logger.error(err, 'CatchFilter');
     });
   }
 
   catch(exception: unknown, host: ArgumentsHost): void {
-    this.logger.error(exception);
+    this.logger.error(exception, 'CatchFilter');
     const { httpAdapter } = this.httpAdapterHost;
 
     const context = host.switchToHttp();
