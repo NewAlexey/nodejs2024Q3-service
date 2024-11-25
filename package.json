@@ -28,7 +28,8 @@
     "db:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/config/ormseedconfig.ts migration:run",
     "db:revert": "npm run typeorm migration:revert",
     "rd": "npm run db:drop && npm run db:migrate && npm run db:seed",
-    "docker:up": "docker compose up",
+    "docker:up": "docker compose -f Docker-compose.yaml up",
+    "docker:up:db": "docker compose -f db.Docker-compose.yaml up",
     "docker:down": "docker compose down",
     "docker:watch": "docker compose watch",
     "docker:scan": "docker scout cves newalexey/rs-home-library-pst grs && docker scout cves newalexey/rs-home-library-app"

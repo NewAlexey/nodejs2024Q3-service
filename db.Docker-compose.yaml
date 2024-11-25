@@ -1,0 +1,21 @@
+services:
+  postgres:
+    container_name: rs-db
+    image: newalexey/rs-home-library-pstgrs:latest
+    env_file:
+      - .env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_DB: '${DB_PORT}'
+      POSTGRES_USER: '${DB_USER_NAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+    ports:
+      - '${DB_EXPOSE_PORT}:${DB_PORT}'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+    restart: always
+
+volumes:
+  postgres_data:
+  postgres_logs:
