@@ -1,9 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
+import { UserModule } from 'src/modules/user/user.module';
+import { TrackModule } from 'src/modules/track/track.module';
+import { AppRepositoryModule } from 'src/db/app.repository.module';
+import { ArtistModule } from 'src/modules/artist/artist.module';
+import { AlbumModule } from 'src/modules/album/album.module';
+import { FavoriteModule } from 'src/modules/favorite/favorite.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot(),
+    UserModule,
+    TrackModule,
+    ArtistModule,
+    AlbumModule,
+    FavoriteModule,
+    AppRepositoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
